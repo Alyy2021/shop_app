@@ -1,11 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:udemy_flutter/layout/news_app/cubit/cubit.dart';
-import 'package:udemy_flutter/layout/news_app/news_layout.dart';
-import 'package:udemy_flutter/layout/todo_app/todo_layout.dart';
+
 import 'package:udemy_flutter/layout/shop_app/shop_Home.dart';
 import 'package:udemy_flutter/modules/shop_app/logain/shop_logain.dart';
 import 'package:udemy_flutter/shared/bloc_observer.dart';
@@ -84,7 +81,7 @@ class MyApp extends StatelessWidget {
             ),
         ),
         BlocProvider(
-          create: (BuildContext context) => ShopCubit()..getHomeDate(),
+          create: (BuildContext context) => ShopCubit()..getHomeDate()..getCategories(),
 
             ),
       ],

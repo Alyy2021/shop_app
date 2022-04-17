@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:udemy_flutter/layout/shop_app/shop_cubit/states.dart';
+import 'package:udemy_flutter/models/shop_app/categorise_model.dart';
 import 'package:udemy_flutter/models/shop_app/home_model.dart';
 import 'package:udemy_flutter/modules/shop_app/cateogrise/Categories_Screen.dart';
 import 'package:udemy_flutter/modules/shop_app/favorits/favourit_screen.dart';
@@ -40,8 +41,12 @@ class ShopCubit extends Cubit<ShopStates>
     {
       homeModel = HomeModel.fromJson(value.data);
 
-      // printFullText(homeModel.data.banners[0].image);
-      // print(homeModel.status);
+      homeModel.data.products.forEach((element)
+      {
+        favorites.addAll({
+          element.id : element.inFavorites,
+        });
+      });
 
       emit(ShopSuccessHomeDataState());
     }).catchError((error){
@@ -49,5 +54,28 @@ class ShopCubit extends Cubit<ShopStates>
       print(error.toString());
       emit(ShopErrorHomeDataState());
     });
+  }
+
+  CategoriesModel categoriesModel;
+
+  void getCategories() {
+    DioHelper.getData(
+      url: GET_CATEGORIES,
+    ).then((value) {
+      categoriesModel = CategoriesModel.fromJson(value.data);
+
+      emit(ShopSuccessCategoriesState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(ShopErrorCategoriesState());
+    });
+  }
+
+  void changeFavorites(int productID) {
+DioHelper.postData(
+  url: FAVORITES,
+  data: {'product_id' : productID },
+).then((value) {})
+    .catchError((error){});
   }
 }
